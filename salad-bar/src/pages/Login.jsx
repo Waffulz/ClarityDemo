@@ -22,9 +22,11 @@ export default function Login() {
     e.preventDefault();
     if (isSignup) {
       signup(form.name, form.email, form.password);
+      window.clarity?.("event", "signUp");
       toast.success('Account created! Welcome to Sprout.');
     } else {
       login(form.email, form.password);
+      window.clarity?.("event", "login");
       toast.success('Welcome back!');
     }
     navigate('/');

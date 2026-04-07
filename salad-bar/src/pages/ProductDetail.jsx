@@ -1,5 +1,5 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Star, Minus, Plus, ChevronLeft, Clock, Flame } from 'lucide-react';
 import { salads, toppings, dressings } from '../data/salads';
 import { useCartStore } from '../stores/cartStore';
@@ -14,6 +14,15 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [selectedDressing, setSelectedDressing] = useState(null);
+
+  // Clarity: track product views to measure interest
+  useEffect(() => {
+    if (salad) {
+      window.clarity?.("event", "viewProduct");
+      window.clarity?.("set", "viewedSalad", salad.name);
+      window.clarity?.("set", "viewedSaladCategory", salad.category);
+    }
+  }, [salad]);
 
   if (!salad) {
     return (
@@ -39,6 +48,18 @@ export default function ProductDetail() {
 
   const handleAddToCart = () => {
     addItem(salad, quantity, { toppings: selectedToppings, dressing: selectedDressing });
+    // Clarity: track add to cart with product details
+    window.clarity?.("event", "addToCart");
+    window.clarity?.("set", "addedSalad", salad.name);
+    window.clarity?.("set", "addedSaladCategory", salad.category);
+    window.clarity?.("set", "addToCartSource", "productDetail");
+    window.clarity?.("set", "addToCartQuantity", String(quantity));
+    if (selectedDressing) {
+      window.clarity?.("set", "selectedDressing", selectedDressing);
+    }
+    if (selectedToppings.length > 0) {
+      window.clarity?.("set", "selectedToppings", selectedToppings.map((t) => t.name));
+    }
     toast.success(`${quantity}x ${salad.name} added to cart!`);
     navigate('/cart');
   };

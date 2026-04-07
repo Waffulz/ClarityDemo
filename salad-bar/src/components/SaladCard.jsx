@@ -10,6 +10,11 @@ export default function SaladCard({ salad }) {
     e.preventDefault();
     e.stopPropagation();
     addItem(salad, 1, { toppings: [], dressing: null });
+    // Clarity: track which salad was added and from where
+    window.clarity?.("event", "addToCart");
+    window.clarity?.("set", "addedSalad", salad.name);
+    window.clarity?.("set", "addedSaladCategory", salad.category);
+    window.clarity?.("set", "addToCartSource", "quickAdd");
     toast.success(`${salad.name} added to cart!`);
   };
 

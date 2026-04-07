@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { MapPin, CreditCard, ChevronLeft } from 'lucide-react';
 import { useCartStore } from '../stores/cartStore';
@@ -20,6 +20,14 @@ export default function Checkout() {
     notes: '',
   });
 
+  // Clarity: track when users reach checkout
+  useEffect(() => {
+    if (items.length > 0) {
+      window.clarity?.("event", "checkout");
+      window.clarity?.("set", "checkoutItemCount", String(items.length));
+    }
+  }, []);
+
   if (items.length === 0) {
     navigate('/cart');
     return null;
@@ -31,6 +39,12 @@ export default function Checkout() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Clarity: track completed order
+    window.clarity?.("event", "orderPlaced");
+    window.clarity?.("set", "orderTotal", `$${total.toFixed(2)}`);
+    window.clarity?.("set", "orderItemCount", String(items.length));
+    window.clarity?.("set", "deliveryMethod", deliveryMethod);
+    window.clarity?.("upgrade", "completed-order");
     clearCart();
     navigate('/order-confirmation');
   };
