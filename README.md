@@ -34,6 +34,44 @@ The Clarity tracking script is embedded in `salad-bar/index.html` and automatica
 
 When users log in or sign up, the app calls `clarity('identify', ...)` to tag sessions with user info. This allows filtering sessions by user in the Clarity dashboard. See `salad-bar/src/stores/authStore.js`.
 
+### Custom Events
+
+The app fires custom events at key interaction points, enabling funnel analysis in the Clarity dashboard:
+
+| Event | Trigger |
+|-------|---------|
+| `viewProduct` | User opens a salad detail page |
+| `addToCart` | User adds a salad (quick add from catalog or detail page) |
+| `checkout` | User reaches the checkout page |
+| `orderPlaced` | User completes an order |
+| `login` | User signs in |
+| `signUp` | User creates an account |
+
+**Suggested funnel:** `viewProduct` → `addToCart` → `checkout` → `orderPlaced`
+
+### Custom Tags
+
+Sessions are tagged with metadata for filtering and analysis:
+
+| Tag | Purpose |
+|-----|---------|
+| `addedSalad` | Salad name on each add-to-cart — **filter by this to find most popular salads** |
+| `addedSaladCategory` | Category of the added salad (Classics, Bowls, Signature, Protein) |
+| `addToCartSource` | Where the add happened: `quickAdd` (catalog grid) or `productDetail` |
+| `addToCartQuantity` | Quantity added from the detail page |
+| `viewedSalad` | Salad name on each product view |
+| `viewedSaladCategory` | Category of the viewed salad |
+| `selectedDressing` | Dressing chosen on the detail page |
+| `selectedToppings` | Extra toppings chosen |
+| `checkoutItemCount` | Number of items at checkout |
+| `orderTotal` | Final order total |
+| `orderItemCount` | Number of items in the completed order |
+| `deliveryMethod` | `delivery` or `pickup` |
+
+### Session Upgrades
+
+Sessions where a user completes an order are marked with `clarity("upgrade", "completed-order")` so Clarity prioritizes recording them — useful if your site exceeds the 100K daily recording limit.
+
 ### Data Export API (Optional)
 
 The project also includes a Python tool (`tools/clarity_connect.py`) for pulling Clarity dashboard data programmatically via the [Data Export API](https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-data-export-api). This requires an API token configured in `.env`.
