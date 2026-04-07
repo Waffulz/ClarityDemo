@@ -28,7 +28,7 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 no-underline">
             <Leaf className="w-7 h-7 text-sage" strokeWidth={2.5} />
-            <span className="text-xl font-bold tracking-tight text-charcoal">Very Good Saladas</span>
+            <span className="text-xl font-bold tracking-tight text-charcoal">VERYGOODLADS</span>
           </Link>
 
           {/* Desktop Nav */}
