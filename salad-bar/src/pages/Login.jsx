@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Leaf } from 'lucide-react';
+import { Beer } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 import toast from 'react-hot-toast';
 
@@ -23,7 +23,7 @@ export default function Login() {
     if (isSignup) {
       signup(form.name, form.email, form.password);
       window.clarity?.("event", "signUp");
-      toast.success('Account created! Welcome to Sprout.');
+      toast.success('Account created! Welcome to Cerveza Imports.');
     } else {
       login(form.email, form.password);
       window.clarity?.("event", "login");
@@ -38,8 +38,8 @@ export default function Login() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 no-underline">
-            <Leaf className="w-8 h-8 text-sage" strokeWidth={2.5} />
-            <span className="text-2xl font-bold text-charcoal">SPROUT</span>
+            <Beer className="w-8 h-8 text-navy" strokeWidth={2.5} />
+            <span className="text-2xl font-bold text-charcoal">CERVEZA IMPORTS</span>
           </Link>
           <p className="text-sm text-warm-gray mt-2">
             {isSignup ? 'Create your account' : 'Welcome back'}
@@ -94,7 +94,7 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full bg-sage text-white py-3.5 rounded-xl font-medium hover:bg-sage-dark transition-colors text-sm cursor-pointer border-none"
+            className="w-full bg-navy text-white py-3.5 rounded-xl font-medium hover:bg-navy-dark transition-colors text-sm cursor-pointer border-none"
           >
             {isSignup ? 'Create Account' : 'Sign In'}
           </button>
@@ -104,7 +104,7 @@ export default function Login() {
             <button
               type="button"
               onClick={() => setIsSignup(!isSignup)}
-              className="text-sage font-medium hover:underline bg-transparent border-none cursor-pointer p-0"
+              className="text-navy font-medium hover:underline bg-transparent border-none cursor-pointer p-0"
             >
               {isSignup ? 'Sign In' : 'Sign Up'}
             </button>

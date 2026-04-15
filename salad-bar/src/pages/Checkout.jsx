@@ -39,7 +39,6 @@ export default function Checkout() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Clarity: track completed order
     window.clarity?.("event", "orderPlaced");
     window.clarity?.("set", "orderTotal", `$${total.toFixed(2)}`);
     window.clarity?.("set", "orderItemCount", String(items.length));
@@ -53,7 +52,7 @@ export default function Checkout() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-1 text-sm text-warm-gray hover:text-sage transition-colors mb-6 bg-transparent border-none cursor-pointer p-0"
+        className="flex items-center gap-1 text-sm text-warm-gray hover:text-navy transition-colors mb-6 bg-transparent border-none cursor-pointer p-0"
       >
         <ChevronLeft className="w-4 h-4" /> Back to cart
       </button>
@@ -61,9 +60,9 @@ export default function Checkout() {
       <h1 className="text-3xl font-bold text-charcoal mb-8">Checkout</h1>
 
       {!isAuthenticated && (
-        <div className="bg-sage/5 border border-sage/20 rounded-xl p-4 mb-6 flex items-center justify-between">
+        <div className="bg-navy/5 border border-navy/20 rounded-xl p-4 mb-6 flex items-center justify-between">
           <p className="text-sm text-charcoal-light">Already have an account?</p>
-          <Link to="/login" className="text-sm font-medium text-sage hover:underline no-underline">
+          <Link to="/login" className="text-sm font-medium text-navy hover:underline no-underline">
             Login for faster checkout
           </Link>
         </div>
@@ -71,12 +70,12 @@ export default function Checkout() {
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left column — form */}
+          {/* Left column */}
           <div className="lg:col-span-2 space-y-6">
             {/* Delivery method */}
             <div className="bg-white rounded-2xl border border-cream-dark p-6">
               <h2 className="text-base font-semibold text-charcoal mb-4 flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-sage" /> Delivery Method
+                <MapPin className="w-5 h-5 text-navy" /> Delivery Method
               </h2>
               <div className="grid grid-cols-2 gap-3">
                 <button
@@ -84,8 +83,8 @@ export default function Checkout() {
                   onClick={() => setDeliveryMethod('delivery')}
                   className={`py-3 rounded-xl text-sm font-medium border transition-colors cursor-pointer ${
                     deliveryMethod === 'delivery'
-                      ? 'bg-sage text-white border-sage'
-                      : 'bg-white text-charcoal-light border-cream-dark hover:border-sage'
+                      ? 'bg-navy text-white border-navy'
+                      : 'bg-white text-charcoal-light border-cream-dark hover:border-navy'
                   }`}
                 >
                   Delivery
@@ -95,8 +94,8 @@ export default function Checkout() {
                   onClick={() => setDeliveryMethod('pickup')}
                   className={`py-3 rounded-xl text-sm font-medium border transition-colors cursor-pointer ${
                     deliveryMethod === 'pickup'
-                      ? 'bg-sage text-white border-sage'
-                      : 'bg-white text-charcoal-light border-cream-dark hover:border-sage'
+                      ? 'bg-navy text-white border-navy'
+                      : 'bg-white text-charcoal-light border-cream-dark hover:border-navy'
                   }`}
                 >
                   Pickup
@@ -146,7 +145,7 @@ export default function Checkout() {
               </div>
             </div>
 
-            {/* Address (only for delivery) */}
+            {/* Address */}
             {deliveryMethod === 'delivery' && (
               <div className="bg-white rounded-2xl border border-cream-dark p-6">
                 <h2 className="text-base font-semibold text-charcoal mb-4">Delivery Address</h2>
@@ -182,7 +181,7 @@ export default function Checkout() {
             {/* Payment */}
             <div className="bg-white rounded-2xl border border-cream-dark p-6">
               <h2 className="text-base font-semibold text-charcoal mb-4 flex items-center gap-2">
-                <CreditCard className="w-5 h-5 text-sage" /> Payment
+                <CreditCard className="w-5 h-5 text-navy" /> Payment
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2">
@@ -224,7 +223,7 @@ export default function Checkout() {
                 onChange={handleChange}
                 rows={3}
                 className="w-full px-3 py-2.5 text-sm border border-cream-dark rounded-xl bg-cream/50 placeholder-warm-gray resize-none"
-                placeholder="Any special requests or allergies..."
+                placeholder="Any special delivery instructions..."
               />
             </div>
           </div>
@@ -260,7 +259,7 @@ export default function Checkout() {
                 </div>
                 <div className="flex justify-between text-sm text-charcoal-light">
                   <span>Delivery</span>
-                  <span className="text-sage font-medium">
+                  <span className="text-navy font-medium">
                     {deliveryMethod === 'pickup' ? '$0.00' : 'Free'}
                   </span>
                 </div>
@@ -272,7 +271,7 @@ export default function Checkout() {
 
               <button
                 type="submit"
-                className="w-full mt-4 bg-sage text-white py-3.5 rounded-xl font-medium hover:bg-sage-dark transition-colors text-sm cursor-pointer border-none"
+                className="w-full mt-4 bg-navy text-white py-3.5 rounded-xl font-medium hover:bg-navy-dark transition-colors text-sm cursor-pointer border-none"
               >
                 Place Order
               </button>

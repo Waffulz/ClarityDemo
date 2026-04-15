@@ -18,13 +18,13 @@ export default function App() {
           duration: 2000,
           style: {
             background: '#fff',
-            color: '#2D2D2D',
+            color: '#1A1A2E',
             borderRadius: '12px',
             fontSize: '14px',
-            border: '1px solid #F0EBE3',
+            border: '1px solid #E8DCC0',
           },
           success: {
-            iconTheme: { primary: '#4A6741', secondary: '#fff' },
+            iconTheme: { primary: '#00205B', secondary: '#FFC72C' },
           },
         }}
       />
@@ -32,7 +32,7 @@ export default function App() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Catalog />} />
-          <Route path="/salad/:id" element={<ProductDetail />} />
+          <Route path="/beer/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/login" element={<Login />} />

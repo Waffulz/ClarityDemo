@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { SlidersHorizontal, X } from 'lucide-react';
-import SaladCard from '../components/SaladCard';
-import { salads, categories, dietaryOptions } from '../data/salads';
+import BeerCard from '../components/BeerCard';
+import { beers, categories, tagOptions } from '../data/beers';
 
 export default function Catalog() {
   const [searchParams] = useSearchParams();
@@ -10,8 +10,8 @@ export default function Catalog() {
   const urlSearch = searchParams.get('search') || '';
 
   const [category, setCategory] = useState(urlCategory);
-  const [priceRange, setPriceRange] = useState([0, 20]);
-  const [selectedDietary, setSelectedDietary] = useState([]);
+  const [priceRange, setPriceRange] = useState([0, 35]);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [sortBy, setSortBy] = useState('relevancy');
   const [filtersOpen, setFiltersOpen] = useState(false);
 
@@ -20,12 +20,12 @@ export default function Catalog() {
     if (urlCategory !== 'All') setCategory(urlCategory);
   }, [urlCategory]);
 
-  const filteredSalads = useMemo(() => {
-    let result = salads.filter((s) => {
-      if (category !== 'All' && s.category !== category) return false;
-      if (s.price < priceRange[0] || s.price > priceRange[1]) return false;
-      if (selectedDietary.length > 0 && !selectedDietary.some((d) => s.dietary.includes(d))) return false;
-      if (urlSearch && !s.name.toLowerCase().includes(urlSearch.toLowerCase())) return false;
+  const filteredBeers = useMemo(() => {
+    let result = beers.filter((b) => {
+      if (category !== 'All' && b.category !== category) return false;
+      if (b.price < priceRange[0] || b.price > priceRange[1]) return false;
+      if (selectedTags.length > 0 && !selectedTags.some((t) => b.tags.includes(t))) return false;
+      if (urlSearch && !b.name.toLowerCase().includes(urlSearch.toLowerCase())) return false;
       return true;
     });
 
@@ -44,45 +44,45 @@ export default function Catalog() {
     }
 
     return result;
-  }, [category, priceRange, selectedDietary, sortBy, urlSearch]);
+  }, [category, priceRange, selectedTags, sortBy, urlSearch]);
 
-  const toggleDietary = (option) => {
-    setSelectedDietary((prev) =>
-      prev.includes(option) ? prev.filter((d) => d !== option) : [...prev, option]
+  const toggleTag = (option) => {
+    setSelectedTags((prev) =>
+      prev.includes(option) ? prev.filter((t) => t !== option) : [...prev, option]
     );
   };
 
   const activeFilters = [
     ...(category !== 'All' ? [{ label: category, clear: () => setCategory('All') }] : []),
-    ...(priceRange[0] > 0 || priceRange[1] < 20
-      ? [{ label: `$${priceRange[0]}-$${priceRange[1]}`, clear: () => setPriceRange([0, 20]) }]
+    ...(priceRange[0] > 0 || priceRange[1] < 35
+      ? [{ label: `$${priceRange[0]}-$${priceRange[1]}`, clear: () => setPriceRange([0, 35]) }]
       : []),
-    ...selectedDietary.map((d) => ({
-      label: d,
-      clear: () => setSelectedDietary((prev) => prev.filter((x) => x !== d)),
+    ...selectedTags.map((t) => ({
+      label: t,
+      clear: () => setSelectedTags((prev) => prev.filter((x) => x !== t)),
     })),
   ];
 
   const clearAllFilters = () => {
     setCategory('All');
-    setPriceRange([0, 20]);
-    setSelectedDietary([]);
+    setPriceRange([0, 35]);
+    setSelectedTags([]);
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       {/* Page header */}
       <div className="mb-6">
-        <p className="text-xs text-warm-gray mb-1">Homepage / Salads</p>
+        <p className="text-xs text-warm-gray mb-1">Home / Mexican Beers</p>
         <h1 className="text-3xl sm:text-4xl font-bold text-charcoal">
-          {urlSearch ? `Results for "${urlSearch}"` : 'Fresh Salads'}
+          {urlSearch ? `Results for "${urlSearch}"` : 'Mexican Beer Imports'}
         </h1>
       </div>
 
       {/* Toolbar */}
       <div className="flex items-center justify-between mb-4">
         <p className="text-sm text-warm-gray">
-          Showing {filteredSalads.length} salads
+          Showing {filteredBeers.length} products
         </p>
         <div className="flex items-center gap-3">
           <button
@@ -150,10 +150,10 @@ export default function Catalog() {
             <input
               type="range"
               min="0"
-              max="20"
+              max="35"
               value={priceRange[1]}
               onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-              className="w-full accent-sage"
+              className="w-full accent-navy"
             />
             <div className="flex items-center gap-2 mt-2">
               <span className="text-xs text-warm-gray">From</span>
@@ -169,7 +169,7 @@ export default function Catalog() {
               <input
                 type="number"
                 min={priceRange[0]}
-                max="20"
+                max="35"
                 value={priceRange[1]}
                 onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
                 className="w-16 text-xs border border-cream-dark rounded-lg px-2 py-1.5 text-center"
@@ -179,7 +179,7 @@ export default function Catalog() {
 
           {/* Category */}
           <div className="mb-6">
-            <h3 className="text-sm font-semibold text-charcoal mb-3">Category</h3>
+            <h3 className="text-sm font-semibold text-charcoal mb-3">Style</h3>
             <div className="space-y-2">
               {categories.map((cat) => (
                 <label key={cat} className="flex items-center gap-2 cursor-pointer">
@@ -188,7 +188,7 @@ export default function Catalog() {
                     name="category"
                     checked={category === cat}
                     onChange={() => setCategory(cat)}
-                    className="accent-sage w-4 h-4"
+                    className="accent-navy w-4 h-4"
                   />
                   <span className="text-sm text-charcoal-light">{cat}</span>
                 </label>
@@ -196,17 +196,17 @@ export default function Catalog() {
             </div>
           </div>
 
-          {/* Dietary */}
+          {/* Tags */}
           <div className="mb-6">
-            <h3 className="text-sm font-semibold text-charcoal mb-3">Dietary</h3>
+            <h3 className="text-sm font-semibold text-charcoal mb-3">Type</h3>
             <div className="space-y-2">
-              {dietaryOptions.map((option) => (
+              {tagOptions.map((option) => (
                 <label key={option} className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
-                    checked={selectedDietary.includes(option)}
-                    onChange={() => toggleDietary(option)}
-                    className="accent-sage w-4 h-4 rounded"
+                    checked={selectedTags.includes(option)}
+                    onChange={() => toggleTag(option)}
+                    className="accent-navy w-4 h-4 rounded"
                   />
                   <span className="text-sm text-charcoal-light capitalize">{option}</span>
                 </label>
@@ -217,27 +217,27 @@ export default function Catalog() {
           {filtersOpen && (
             <button
               onClick={() => setFiltersOpen(false)}
-              className="w-full mt-4 bg-sage text-white py-3 rounded-xl font-medium md:hidden"
+              className="w-full mt-4 bg-navy text-white py-3 rounded-xl font-medium md:hidden"
             >
               Apply Filters
             </button>
           )}
         </aside>
 
-        {/* Salad grid */}
+        {/* Beer grid */}
         <div className="flex-1">
-          {filteredSalads.length > 0 ? (
+          {filteredBeers.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filteredSalads.map((salad) => (
-                <SaladCard key={salad.id} salad={salad} />
+              {filteredBeers.map((beer) => (
+                <BeerCard key={beer.id} beer={beer} />
               ))}
             </div>
           ) : (
             <div className="text-center py-20">
-              <p className="text-lg text-warm-gray">No salads match your filters.</p>
+              <p className="text-lg text-warm-gray">No beers match your filters.</p>
               <button
                 onClick={clearAllFilters}
-                className="mt-3 text-sage font-medium hover:underline bg-transparent border-none cursor-pointer"
+                className="mt-3 text-navy font-medium hover:underline bg-transparent border-none cursor-pointer"
               >
                 Clear all filters
               </button>

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Search, User, Leaf, Menu, X } from 'lucide-react';
+import { ShoppingCart, Search, User, Beer, Menu, X } from 'lucide-react';
 import { useCartStore } from '../stores/cartStore';
 import { useAuthStore } from '../stores/authStore';
 import { useState } from 'react';
@@ -22,25 +22,28 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white border-b border-cream-dark sticky top-0 z-50">
+    <header className="bg-navy border-b border-navy-dark sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 no-underline">
-            <Leaf className="w-7 h-7 text-sage" strokeWidth={2.5} />
-            <span className="text-xl font-bold tracking-tight text-charcoal">VERYGOODLADS</span>
+            <Beer className="w-7 h-7 text-gold" strokeWidth={2.5} />
+            <span className="text-xl font-bold tracking-tight text-white">CERVEZA IMPORTS</span>
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link to="/" className="text-sm font-medium text-charcoal-light hover:text-sage transition-colors no-underline">
-              Menu
+            <Link to="/" className="text-sm font-medium text-white/80 hover:text-gold transition-colors no-underline">
+              Shop All
             </Link>
-            <Link to="/?category=Bowls" className="text-sm font-medium text-charcoal-light hover:text-sage transition-colors no-underline">
-              Bowls
+            <Link to="/?category=Lager" className="text-sm font-medium text-white/80 hover:text-gold transition-colors no-underline">
+              Lagers
             </Link>
-            <Link to="/?category=Signature" className="text-sm font-medium text-charcoal-light hover:text-sage transition-colors no-underline">
-              Signature
+            <Link to="/?category=Pilsner" className="text-sm font-medium text-white/80 hover:text-gold transition-colors no-underline">
+              Pilsners
+            </Link>
+            <Link to="/?category=Dark" className="text-sm font-medium text-white/80 hover:text-gold transition-colors no-underline">
+              Dark Beers
             </Link>
           </nav>
 
@@ -49,19 +52,19 @@ export default function Header() {
             {/* Search toggle */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
-              className="p-2 rounded-full hover:bg-cream transition-colors"
+              className="p-2 rounded-full hover:bg-navy-light transition-colors"
             >
-              <Search className="w-5 h-5 text-charcoal-light" />
+              <Search className="w-5 h-5 text-white/80" />
             </button>
 
             {/* User */}
             {isAuthenticated ? (
               <div className="hidden sm:flex items-center gap-2">
-                <User className="w-5 h-5 text-sage" />
-                <span className="text-sm font-medium text-charcoal">{user.name}</span>
+                <User className="w-5 h-5 text-gold" />
+                <span className="text-sm font-medium text-white">{user.name}</span>
                 <button
                   onClick={logout}
-                  className="text-xs text-warm-gray hover:text-red-sale transition-colors ml-1"
+                  className="text-xs text-white/50 hover:text-red-sale transition-colors ml-1"
                 >
                   Logout
                 </button>
@@ -69,7 +72,7 @@ export default function Header() {
             ) : (
               <Link
                 to="/login"
-                className="hidden sm:flex items-center gap-1 text-sm font-medium text-charcoal-light hover:text-sage transition-colors no-underline"
+                className="hidden sm:flex items-center gap-1 text-sm font-medium text-white/80 hover:text-gold transition-colors no-underline"
               >
                 <User className="w-5 h-5" />
                 <span>Login</span>
@@ -79,11 +82,11 @@ export default function Header() {
             {/* Cart */}
             <Link
               to="/cart"
-              className="relative p-2 rounded-full hover:bg-cream transition-colors no-underline"
+              className="relative p-2 rounded-full hover:bg-navy-light transition-colors no-underline"
             >
-              <ShoppingCart className="w-5 h-5 text-charcoal-light" />
+              <ShoppingCart className="w-5 h-5 text-white/80" />
               {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-sage text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-gold text-navy text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {itemCount}
                 </span>
               )}
@@ -92,9 +95,9 @@ export default function Header() {
             {/* Mobile menu */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden p-2 rounded-full hover:bg-cream transition-colors"
+              className="md:hidden p-2 rounded-full hover:bg-navy-light transition-colors"
             >
-              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {menuOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
             </button>
           </div>
         </div>
@@ -107,11 +110,11 @@ export default function Header() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search salads..."
+                placeholder="Search beers..."
                 autoFocus
-                className="w-full bg-cream rounded-xl px-4 py-3 pl-10 text-sm border-none placeholder-warm-gray"
+                className="w-full bg-navy-light rounded-xl px-4 py-3 pl-10 text-sm border-none placeholder-white/40 text-white"
               />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-gray" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
             </div>
           </form>
         )}
@@ -119,17 +122,20 @@ export default function Header() {
         {/* Mobile nav */}
         {menuOpen && (
           <nav className="md:hidden pb-4 flex flex-col gap-2">
-            <Link to="/" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium text-charcoal-light hover:bg-cream no-underline">
-              Menu
+            <Link to="/" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium text-white/80 hover:bg-navy-light no-underline">
+              Shop All
             </Link>
-            <Link to="/?category=Bowls" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium text-charcoal-light hover:bg-cream no-underline">
-              Bowls
+            <Link to="/?category=Lager" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium text-white/80 hover:bg-navy-light no-underline">
+              Lagers
             </Link>
-            <Link to="/?category=Signature" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium text-charcoal-light hover:bg-cream no-underline">
-              Signature
+            <Link to="/?category=Pilsner" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium text-white/80 hover:bg-navy-light no-underline">
+              Pilsners
+            </Link>
+            <Link to="/?category=Dark" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium text-white/80 hover:bg-navy-light no-underline">
+              Dark Beers
             </Link>
             {!isAuthenticated && (
-              <Link to="/login" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium text-sage hover:bg-cream no-underline">
+              <Link to="/login" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium text-gold hover:bg-navy-light no-underline">
                 Login
               </Link>
             )}
